@@ -1,15 +1,16 @@
 package telran.java58.person.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import telran.java58.person.dao.PersonRepository;
 import telran.java58.person.dto.AddressDto;
 import telran.java58.person.dto.CityPopulationDto;
 import telran.java58.person.dto.PersonDto;
 import telran.java58.person.dto.exception.PersonExistException;
 import telran.java58.person.dto.exception.PersonNotFoundException;
+import telran.java58.person.model.Address;
 import telran.java58.person.model.Person;
 
 @Service
@@ -34,18 +35,29 @@ public class PersonServiceImpl implements PersonService{
     }
 
     @Override
+    @Transactional
     public PersonDto deletePerson(int id) {
-        return null;
+        Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
+        personRepository.delete(person);
+        return modelMapper.map(person, PersonDto.class);
     }
 
     @Override
+    @Transactional
     public PersonDto updatePersonName(Integer id, String newName) {
-        return null;
+        Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
+        person.setName(newName);
+        return modelMapper.map(person, PersonDto.class);
     }
 
     @Override
+    @Transactional
     public PersonDto updatePersonAddress(Integer id, AddressDto newAddress) {
-        return null;
+        Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
+        Address address = modelMapper.map(newAddress, Address.class);
+        person.setAddress(address);
+        personRepository.save(person);
+        return modelMapper.map(person, PersonDto.class);
     }
 
     @Override
