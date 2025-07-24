@@ -1,7 +1,9 @@
 package telran.java58.person.model;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 import java.time.LocalDate;
 
@@ -10,6 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"id"})
 @Entity
+@Table(name = "persons")
 public class Person {
     @Id
     private int id;
@@ -17,5 +20,6 @@ public class Person {
     private String name;
     private LocalDate birthDate;
     @Setter
+    @Embedded
     private Address address;
 }
