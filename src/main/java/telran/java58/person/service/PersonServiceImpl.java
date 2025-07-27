@@ -72,7 +72,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonDto[] findPersonByCity(String city) {
-        List<Person> people = personRepository.findByCityIgnoreCase(city);
+        List<Person> people = personRepository.findByAddress_CityIgnoreCase(city);
         return people.stream()
                 .map(person -> modelMapper.map(person, PersonDto.class))
                 .toArray(PersonDto[]::new);

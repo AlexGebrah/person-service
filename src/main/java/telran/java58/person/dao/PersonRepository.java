@@ -10,7 +10,7 @@ import java.util.List;
 public interface PersonRepository extends JpaRepository<Person, Integer> {
     List<Person> findByNameIgnoreCase(String name);
 
-    List<Person> findByCityIgnoreCase(String city);
+    List<Person> findByAddress_CityIgnoreCase(String city);
 
     List<Person> findByAgeBetween(Integer minAge, Integer maxAge);
 
