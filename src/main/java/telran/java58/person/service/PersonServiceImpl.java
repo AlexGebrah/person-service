@@ -13,6 +13,7 @@ import telran.java58.person.dto.exception.PersonNotFoundException;
 import telran.java58.person.model.Address;
 import telran.java58.person.model.Person;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -80,7 +81,11 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonDto[] findPersonsBetweenAges(Integer minAge, Integer maxAge) {
-        List<Person> people = personRepository.findByAgeBetween(minAge, maxAge);
+        LocalDate today = LocalDate.now();
+        LocalDate maxBirthDate = today.minusYears(minAge);
+        LocalDate minBirthDate = today.minusYears(maxAge);
+
+        List<Person> people = personRepository.findByBirthDateBetween(minBirthDate, maxBirthDate);
         return people.stream()
                 .map(person -> modelMapper.map(person, PersonDto.class))
                 .toArray(PersonDto[]::new);
