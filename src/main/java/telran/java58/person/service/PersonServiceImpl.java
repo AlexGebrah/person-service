@@ -42,6 +42,12 @@ public class PersonServiceImpl implements PersonService, CommandLineRunner {
     @Override
     public PersonDto getPerson(int id) {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
+        if(person instanceof Child){
+            return modelMapper.map(person, ChildDto.class);
+        }
+        if(person instanceof Employee){
+            return modelMapper.map(person, EmployeeDto.class);
+        }
         return modelMapper.map(person, PersonDto.class);
     }
 
