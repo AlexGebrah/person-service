@@ -59,22 +59,19 @@ public class PersonServiceImpl implements PersonService {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
         Address address = modelMapper.map(newAddress, Address.class);
         person.setAddress(address);
-        personRepository.save(person);
         return modelMapper.map(person, PersonDto.class);
     }
 
     @Override
     public PersonDto[] findPersonByName(String name) {
-        List<Person> people = personRepository.findByNameIgnoreCase(name);
-        return people.stream()
+       return personRepository.findByNameIgnoreCase(name)
                 .map(person -> modelMapper.map(person, PersonDto.class))
                 .toArray(PersonDto[]::new);
     }
 
     @Override
     public PersonDto[] findPersonByCity(String city) {
-        List<Person> people = personRepository.findByAddress_CityIgnoreCase(city);
-        return people.stream()
+        return personRepository.findByAddress_CityIgnoreCase(city)
                 .map(person -> modelMapper.map(person, PersonDto.class))
                 .toArray(PersonDto[]::new);
     }
@@ -85,8 +82,7 @@ public class PersonServiceImpl implements PersonService {
         LocalDate maxBirthDate = today.minusYears(minAge);
         LocalDate minBirthDate = today.minusYears(maxAge);
 
-        List<Person> people = personRepository.findByBirthDateBetween(minBirthDate, maxBirthDate);
-        return people.stream()
+        return personRepository.findByBirthDateBetween(minBirthDate, maxBirthDate)
                 .map(person -> modelMapper.map(person, PersonDto.class))
                 .toArray(PersonDto[]::new);
     }
