@@ -14,7 +14,6 @@ import telran.java58.person.model.Address;
 import telran.java58.person.model.Person;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +62,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PersonDto[] findPersonByName(String name) {
        return personRepository.findByNameIgnoreCase(name)
                 .map(person -> modelMapper.map(person, PersonDto.class))
@@ -70,6 +70,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PersonDto[] findPersonByCity(String city) {
         return personRepository.findByAddress_CityIgnoreCase(city)
                 .map(person -> modelMapper.map(person, PersonDto.class))
@@ -77,10 +78,10 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PersonDto[] findPersonsBetweenAges(Integer minAge, Integer maxAge) {
-        LocalDate today = LocalDate.now();
-        LocalDate maxBirthDate = today.minusYears(minAge);
-        LocalDate minBirthDate = today.minusYears(maxAge);
+        LocalDate maxBirthDate = LocalDate.now().minusYears(minAge);
+        LocalDate minBirthDate = LocalDate.now().minusYears(maxAge);
 
         return personRepository.findByBirthDateBetween(minBirthDate, maxBirthDate)
                 .map(person -> modelMapper.map(person, PersonDto.class))

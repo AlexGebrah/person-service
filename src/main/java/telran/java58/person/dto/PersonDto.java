@@ -1,5 +1,6 @@
 package telran.java58.person.dto;
 
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
