@@ -16,6 +16,7 @@ import telran.java58.person.model.Person;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -108,6 +109,23 @@ public class PersonServiceImpl implements PersonService, CommandLineRunner {
     public Iterable<CityPopulationDto> getCityPopulation() {
         return personRepository.getCityPopulation();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ChildDto[] findAllChildren() {
+            return personRepository.findByType()
+                    .map(child -> modelMapper.map(child, ChildDto.class))
+                    .toArray(ChildDto[]::new);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public EmployeeDto[] findEmployeesBySalary(Integer minSalary, Integer maxSalary) {
+            return personRepository.findBySalaryBetween(minSalary, maxSalary)
+                    .map(e -> modelMapper.map(e, EmployeeDto.class))
+                    .toArray(EmployeeDto[]::new);
+    }
+
 
     @Override
     public void run(String... args) throws Exception {
